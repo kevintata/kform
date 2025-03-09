@@ -12,6 +12,12 @@ import {
   UseFormSetValue,
 } from "react-hook-form";
 import { SortableAddedOption } from "./components/SortableAddedOption";
+import Button from "@mui/material/Button";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Box from "@mui/material/Box";
+import MenuItem from "@mui/material/MenuItem";
 
 type MultiValueSelectProps<T extends FieldValues> = {
   id: string;
@@ -46,8 +52,8 @@ export const MultiValueSelect = <T extends FieldValues>({
 }: MultiValueSelectProps<T>) => {
   const [inputValue, setInputValue] = React.useState<string>("");
 
-  const handleInputChange = (value: string) => {
-    setInputValue(value);
+  const handleInputChange = (event: SelectChangeEvent) => {
+    setInputValue(event.target.value as string);
   };
 
   const handleAddValue = (value: string) => {
@@ -90,41 +96,45 @@ export const MultiValueSelect = <T extends FieldValues>({
 
   return (
     <div className="flex flex-col w-full">
-      <button onClick={() => register} style={{ display: "none" }} />
       <div className="flex flex-row items-end justify-center gap-4 pb-4 w-full">
-        <select
-          id={React.useId()}
-          disabled={isDisabled}
-          value={inputValue}
-          required={required}
-          {...(includeUnaddedValue && {
-            ...register(`${registerKey}[${values.length}]` as Path<T>),
-          })}
-          onChange={(e) => handleInputChange(e.currentTarget.value)}
-          className="block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="" disabled>
-            {placeholder || "Select an option"}
-          </option>
-          {options
-            .filter((option) => !values.includes(option.value))
-            .map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.text}
-              </option>
-            ))}
-        </select>
-        <label htmlFor={id} className="sr-only">
-          {label}
-        </label>
-        <button
-          type="button"
+        <Box sx={{ minWidth: 150 }}>
+          <FormControl fullWidth>
+            <Select
+              id={React.useId()}
+              disabled={isDisabled}
+              label="Age"
+              autoWidth
+              value={inputValue}
+              required={required}
+              {...(includeUnaddedValue && {
+                ...register(`${registerKey}[${values.length}]` as Path<T>),
+              })}
+              onChange={handleInputChange}
+              className="block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+
+              {options
+                .filter((option) => !values.includes(option.value))
+                .map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.text}
+                  </MenuItem>
+                ))}
+            </Select>
+            <InputLabel id="demo-simple-select-label">{label}</InputLabel>
+          </FormControl>
+        </Box>
+
+        <Button
+          variant="contained"
           onClick={() => handleAddValue(inputValue)}
           disabled={isDisabled || inputValue === ""}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50"
         >
           Add
-        </button>
+        </Button>
       </div>
 
       <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>

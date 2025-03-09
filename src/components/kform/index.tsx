@@ -4,7 +4,9 @@ import { KFormTestType } from "./types/KFormTestType";
 import { FormFieldsConfig } from "./types/FormFields";
 
 export const KForm = () => {
-  const { register, setValue, watch } = useForm<KFormTestType>();
+  const { register, setValue, watch, getValues } = useForm<KFormTestType>();
+  console.log("Form values", getValues());
+
   const MULTI_SELECT: FormFieldsConfig<KFormTestType> = {
     title: "Multi Select",
 

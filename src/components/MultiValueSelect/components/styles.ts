@@ -6,8 +6,9 @@ export const AddedOption = styled.div<{ isSortable?: boolean }>`
   flex-direction: row;
   border-radius: 8px;
   padding: 10px;
+  border: 1px solid #000;
   /* TODO -> create theme and update these color references */
-  
+
   gap: 10px;
   font-weight: bold;
   overflow-wrap: anywhere;
@@ -42,7 +43,7 @@ export const RemoveOptionButtonIcon = styled.button`
 
   :disabled {
     cursor: not-allowed;
-    
+
     opacity: 0.5;
   }
 `;
